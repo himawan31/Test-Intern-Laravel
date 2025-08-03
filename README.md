@@ -1,49 +1,52 @@
-# 📝 Laravel Task Management System
+# 🚀 Laravel Task Management System
 
-Sistem manajemen proyek dan tugas berbasis web menggunakan Laravel. Aplikasi ini mendukung pengelolaan proyek, penugasan anggota, pembaruan status tugas, serta pengiriman email pengingat secara otomatis untuk tugas yang belum selesai.
-
----
-
-## 📌 Fitur Utama
-
-- ✅ Manajemen Proyek (CRUD)
-- ✅ Manajemen Tugas (CRUD)
-- ✅ Role-based Access (Admin & Member)
-- ✅ Penugasan Member ke Tugas
-- ✅ Email Pengingat Tugas
-- ✅ Sistem Queue dan Scheduler
-- ✅ Autentikasi & Manajemen Profil Pengguna
+A web-based project and task management application built with Laravel. This system enables project creation, task assignments, member collaboration, and automatic email reminders for unfinished tasks using queue workers and scheduler.
 
 ---
 
-## 🧠 ERD (Entity Relationship Diagram)
+## ✅ Key Features
 
-**Tabel Utama:**
-
-- `users`: menyimpan data pengguna (admin & member)
-- `projects`: menyimpan data proyek
-- `tasks`: menyimpan data tugas
-- `project_user`: tabel pivot untuk relasi many-to-many antara users dan projects
-
-> 💡 Simpan file gambar ERD di `public/images/erd.png`  
-> ![ERD](public/images/erd.png)
-
----
-
-## 🔁 Flowchart Aplikasi
-
-- Login → Dashboard
-- Admin: kelola user, proyek, tugas
-- Member: lihat proyek yang diikuti, update status tugas
-
-> 💡 Simpan file gambar flowchart di `public/images/flowchart.png`  
-> ![Flowchart](public/images/flowchart.png)
+- 📁 Project Management (CRUD)
+- ✅ Task Management (CRUD)
+- 👥 User Management (CRUD)
+- 🔒 Role-Based Access Control (Admin & Member)
+- 🧑‍🤝‍🧑 Project Member Assignment
+- 🔔 Email Reminders for Pending Tasks
+- ⏳ Queue & Scheduler Integration
+- 🔐 Authentication & Profile Management
 
 ---
 
-## ⚙️ Instalasi & Konfigurasi
+## 🧩 Entity Relationship Diagram (ERD)
 
-### 1. Clone Repository
+**Main Tables:**
+
+- `users`: stores user data (admin and member roles)
+- `projects`: stores project information
+- `tasks`: stores individual tasks
+- `project_user`: pivot table for many-to-many relationship between users and projects
+
+<p align="center">
+    <img src="https://github.com/user-attachments/assets/ef9793ab-c446-40db-b75f-882007986ec1" width="700" alt="Entity Relationship Diagram (ERD)"/>
+</p>
+
+---
+
+## 🔄 Application Flowchart
+
+- Login → Dashboard  
+- Admin: manage users, projects, tasks, and reminders  
+- Member: view assigned projects, task lists, and update task progress
+
+<p align="center">
+    <img src="https://github.com/user-attachments/assets/d3186b1d-8e98-4ece-8584-9a66c6e2922b" width="400" alt="Flowchart"/>
+</p>
+
+---
+
+## ⚙️ Installation & Setup
+
+### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/your-username/task-manager.git
@@ -57,9 +60,9 @@ composer install
 npm install && npm run build
 ```
 
-### 3. Konfigurasi Environment
+### 3. Environment Configuration
 
-Salin file `.env`:
+Copy and configure `.env` file:
 
 ```bash
 cp .env.example .env
@@ -67,14 +70,14 @@ cp .env.example .env
 
 Edit `.env`:
 
-```
+```env
 APP_NAME="Laravel Task Manager"
 APP_URL=http://localhost:8000
 
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=nama_database
+DB_DATABASE=your_database
 DB_USERNAME=root
 DB_PASSWORD=
 
@@ -90,7 +93,7 @@ MAIL_FROM_ADDRESS=no-reply@example.com
 MAIL_FROM_NAME="${APP_NAME}"
 ```
 
-### 4. Generate Key
+### 4. Generate Application Key
 
 ```bash
 php artisan key:generate
@@ -98,102 +101,108 @@ php artisan key:generate
 
 ---
 
-## 🗃️ Migrasi & Seeder
+## 📦 Migrations & Seeder
+
+Run the following to migrate and seed the database:
 
 ```bash
 php artisan migrate --seed
 ```
 
-Seeder akan membuat data admin dan user dummy.
+This will generate required tables and populate initial admin and member accounts.
 
 ---
 
-## 🔑 Login Awal (Default User)
+## 🔐 Default Login Accounts
 
-| Role   | Email              | Password |
-| ------ | ------------------ | -------- |
-| Admin  | admin@example.com  | password |
-| Member | member@example.com | password |
-
----
-
-## 📂 Struktur Role & Hak Akses
-
-| Fitur                | Admin | Member                   |
-| -------------------- | ----- | ------------------------ |
-| CRUD Proyek          | ✅    | ❌                       |
-| CRUD Tugas           | ✅    | ❌                       |
-| Lihat Proyek & Tugas | ✅    | ✅                       |
-| Update Status Tugas  | ✅    | ✅ (hanya tugas sendiri) |
-| Kelola Member Proyek | ✅    | ❌                       |
-| CRUD User            | ✅    | ❌                       |
+| Role   | Email                | Password |
+|--------|----------------------|----------|
+| Admin  | admin001@gmail.com   | password |
+| Member | member001@gmail.com  | password |
 
 ---
 
-## ✉️ Sistem Email Reminder
+## 👮‍♂️ Roles & Permissions
 
-### Custom Command
+| Feature                  | Admin | Member                   |
+|--------------------------|-------|--------------------------|
+| Create/Edit/Delete Projects | ✅    | ❌                       |
+| Create/Edit/Delete Tasks    | ✅    | ❌                       |
+| View Projects/Tasks         | ✅    | ✅                       |
+| Update Own Task Progress    | ✅    | ✅                       |
+| Manage Project Members      | ✅    | ❌                       |
+| Manage Users                | ✅    | ❌                       |
 
-Command: `reminder-tasks`  
-Kirim email ke pengguna yang memiliki tugas yang belum selesai.
+---
 
-### Artisan Scheduler
+## 📬 Email Reminder System
+
+### Artisan Command
+
+The following command sends reminder emails for unfinished tasks:
+
+```bash
+php artisan reminder-tasks
+```
+
+### Scheduling the Command
+
+In `app/Console/Kernel.php`:
 
 ```php
-// App\Console\Kernel.php
 $schedule->command('reminder-tasks')->dailyAt('08:00')->timezone('Asia/Jakarta');
 ```
 
-Atau untuk development/test:
+For testing purposes:
 
 ```php
 $schedule->command('reminder-tasks')->everyMinute();
 ```
 
-### Jalankan Queue Worker
+### Queue Worker (Required for Async Mail)
 
 ```bash
 php artisan queue:work
 ```
 
-### Jalankan Scheduler Secara Manual
+### Manually Trigger Scheduler
 
 ```bash
 php artisan schedule:run
 ```
 
-### Cron Job (Linux)
+### Cron Job Setup (Linux)
 
-Tambahkan ke crontab:
+Add this line to your system crontab:
 
 ```
 * * * * * cd /path/to/project && php artisan schedule:run >> /dev/null 2>&1
 ```
 
+> ⚠️ On Windows, use Task Scheduler or run `schedule:run` manually for testing.
+
 ---
 
-## 📂 Struktur Direktori Penting
+## 📁 Important Folder Structure
 
 ```
 app/
 ├── Console/
-│   └── Commands/ReminderTasks.php
+│   └── Commands/ReminderTasks.php   // Custom command
 ├── Mail/
-│   └── TaskReminderMail.php
+│   └── TaskReminderMail.php         // Email template
 routes/
-│   └── web.php
+│   └── web.php                      // Route definitions
 resources/
-│   └── views/
+│   └── views/                       // Blade templates
 database/
-├── migrations/
-├── seeders/
+├── migrations/                      // Table definitions
+├── seeders/                         // Initial data
 ```
 
 ---
 
-## 🧪 Testing
-
-Untuk menguji email reminder:
+## 🧪 Testing the Reminder Feature
 
 ```bash
 php artisan reminder-tasks
@@ -201,37 +210,52 @@ php artisan reminder-tasks
 
 ---
 
-## 📸 Screenshots (Opsional)
+## 🖼️ Screenshots
 
-> Simpan di `public/images/`
+- **Dashboard**  
+<p align="center">
+    <img src="https://github.com/user-attachments/assets/8c891fe7-ff2b-4e72-938f-61e2f81fdafd" width="700" alt="Dashboard"/>
+</p>
 
-- Dashboard: ![Dashboard](public/images/dashboard.png)
-- Manajemen Tugas: ![Tasks](public/images/tasks.png)
+- **User Management**
+<p align="center">
+    <img src="https://github.com/user-attachments/assets/55840270-2965-4a8e-9359-927fa332364e" width="700" alt="User Management"/>
+</p>
+
+- **Project Management**  
+<p align="center">
+    <img src="https://github.com/user-attachments/assets/de810150-55d4-4aff-9014-aa99b547b0f2" width="700" alt="Project Management"/>
+</p>
+
+- **Task Management**  
+<p align="center">
+    <img src="https://github.com/user-attachments/assets/6d0fd1ad-f872-4e4c-b294-3d9c0ed5f067" width="700" alt="Task Management"/>
+</p>
 
 ---
 
-## 🧪 Tech Stack
+## 🧰 Tech Stack
 
 - Laravel 12
 - Tailwind CSS
 - MySQL
-- Laravel Queue (Database)
-- SMTP Mail
-- Blade Component
-- Laravel Scheduler & Artisan Commands
+- Blade Templates
+- Laravel Queue (Database Driver)
+- Laravel Artisan Scheduler
+- SMTP Email Integration
 
 ---
 
-## 📄 Lisensi
+## 📃 License
 
-Proyek ini menggunakan lisensi MIT.
+This project is open-source and available under the MIT License.
 
 ---
 
-## 🙋‍♂️ Developer
+## 👨‍💻 Developer
 
-Himawan Kurnia Eli Santo  
-📧 himawanelisanto@gmail.com  
-📍 Temanggung, Indonesia
+**Himawan Kurnia Eli Santo**  
+📧 [himawanelisanto@gmail.com](mailto:himawanelisanto@gmail.com)  
+📍 Temanggung, Central Java, Indonesia
 
 ---
